@@ -7,7 +7,7 @@ export const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
     const handleClick = async () => {
-		const response = await fetch('https://opulent-invention-69vvw5q75rq524p4q-3001.app.github.dev/api/token',{
+		const response = await fetch('https://cautious-spork-4jqg59qr6xxph9j5-3001.app.github.dev/api/token',{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
