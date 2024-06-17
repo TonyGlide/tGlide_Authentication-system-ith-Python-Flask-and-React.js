@@ -10,8 +10,8 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
-#JWT-Module
 from flask_jwt_extended import JWTManager
+
 
 # from models import Person
 
@@ -22,7 +22,7 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended extension
-app.config["JWT_SECRET_KEY"] = os.environ.get('FLASK_SECRET')
+app.config["JWT_SECRET_KEY"] = os.environ.get("FLASK_SECRET") 
 jwt = JWTManager(app)
 
 # database condiguration
