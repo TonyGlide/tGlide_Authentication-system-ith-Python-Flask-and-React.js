@@ -1,8 +1,5 @@
-"""
-This module takes care of starting the API Server, Loading the DB and Adding the endpoints
-"""
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Invoice
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -12,19 +9,17 @@ from flask_jwt_extended import jwt_required
 
 api = Blueprint('api', __name__)
 
-# Allow CORS requests to this API
+
 CORS(api)
 
-# /token POST
-# this route is for thwn the user ALREADY excists and needs an access token
-#create a user query with a conditional to see if tyhe user exists, or return None
+
 @api.route('/token', methods=['POST'])
 def generate_token():
-    # Receiving the request and converting the body of the request into json format 
+      
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
-    #query the User table to check if the user exists 
+    email = email.lower()  
     user = User.query.filter_by(email = email, password = password).first()
 
     if user is None: 
@@ -41,10 +36,36 @@ def generate_token():
     }
     return jsonify(response), 200 
 
-# create a route for /signup that will add the user's email and password to the database 
-# POST
-#test on postman
+@api.route('/signup', methods=['POST'])
+def register_user():
+  email = request.json.get('email', None)
+  password = request.json.get('password', None)
+  
+  email = email.lower()  
+  user = User.query.filter_by(email=email).first()
 
-#create a protected route for /invoices that will retrieve and return the users' invoices in json format
-#GET 
-# test on postman 
+  if user.email == email:
+     response = {
+        'msg': 'User already exist.'
+        }
+     return jsonify(response), 403
+  
+  user = User()
+  user.email = email
+  user.password = password
+  db.session.add(user)
+  db.session.commint()
+
+  response = {
+     'msg': f'Congratulations {user.email}. You have successfully signed up!'
+  }
+  return jsonify(response), 200
+
+
+
+
+
+
+
+
+        
