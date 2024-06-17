@@ -44,7 +44,7 @@ def register_user():
   email = email.lower()  
   user = User.query.filter_by(email=email).first()
 
-  if user.email == email:
+  if user is not None and user.email == email:
      response = {
         'msg': 'User already exist.'
         }
@@ -53,9 +53,11 @@ def register_user():
   user = User()
   user.email = email
   user.password = password
+  
+  user.is_active = True
   db.session.add(user)
-  db.session.commint()
-
+  db.session.commit()
+  
   response = {
      'msg': f'Congratulations {user.email}. You have successfully signed up!'
   }
