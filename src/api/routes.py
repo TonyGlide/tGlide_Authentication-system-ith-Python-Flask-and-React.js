@@ -63,6 +63,25 @@ def register_user():
   }
   return jsonify(response), 200
 
+@api.route('/invoices', methods=['GET'])
+@jwt_required()
+def get_invoices():
+   
+   user_id = get_jwt_identity()
+   user = user.query.filter_by(id = user_id).first()  
+   user_invoices = Invoice.query.filter_by(user_id=user_id), all()
+   
+   processed_invoices = [each_invoice.seralize() for each_invoice in user_invoices]
+
+   response = {
+      'msg': f'Hello {user.email}, here are your invoices.',
+      'invoices': processed_invoices
+   }
+   return jsonify(response), 200
+ 
+ 
+
+
 
 
 
