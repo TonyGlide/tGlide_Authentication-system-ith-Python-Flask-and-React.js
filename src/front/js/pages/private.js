@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 
-export const Login = () => {
+
+export const Private = () => {
 
     return (
         <>
-        login
+        Private
         </>
     );
 }
